@@ -1,0 +1,5 @@
+pytest
+pytest-benchmark
+xocto==5.0.1  # This version of xocto doesn't require django for ranges...
+black
+mypy
