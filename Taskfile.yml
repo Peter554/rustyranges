@@ -1,0 +1,27 @@
+version: "3"
+
+tasks:
+  install-requirements:
+    cmds:
+      - pip install -r requirements.txt
+
+  fmt:
+    cmds:
+      - cargo fmt
+      - black ./tests ./pysimpleranges
+
+  check:
+    cmds:
+      - mypy ./pysimpleranges
+      - black ./tests ./pysimpleranges --check
+      - task: test
+
+  test:
+    cmds:
+      - maturin develop
+      - pytest --benchmark-skip
+
+  bench:
+    cmds:
+      - maturin develop --release
+      - pytest --benchmark-only --benchmark-columns=mean --benchmark-sort=mean
