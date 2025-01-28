@@ -1,4 +1,3 @@
-import random
 from decimal import Decimal as D
 
 import pytest
@@ -7,14 +6,18 @@ import rustyranges
 import pysimpleranges
 
 
-RANGE_MODULES = [xocto_ranges, rustyranges, pysimpleranges]
+RANGE_MODULES = {xocto_ranges, rustyranges, pysimpleranges}
 
 
 @pytest.mark.parametrize("ranges_module", RANGE_MODULES)
 def test_range(ranges_module):
     range = ranges_module.Range(D(0), D(1))
-    assert range.start == D(0)
-    assert range.end == D(1)
+    if ranges_module in {xocto_ranges, pysimpleranges}:
+        assert range.start == D(0)
+        assert range.end == D(1)
+    else:
+        assert range.start.value() == D(0)
+        assert range.end.value() == D(1)
 
 
 @pytest.mark.parametrize("ranges_module", RANGE_MODULES)

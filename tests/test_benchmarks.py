@@ -33,6 +33,19 @@ def test_benchmark_range_read_start_and_end(ranges_module, benchmark):
     benchmark(read_start_and_end)
 
 
+@pytest.mark.benchmark(group="range_read_start_and_end")
+def test_benchmark_range_read_start_and_end_rustyranges_value(benchmark):
+    n = 100_000
+    ranges = [rustyranges.Range(Decimal(x), Decimal(x + 1)) for x in range(n)]
+
+    def read_start_and_end():
+        for range_ in ranges:
+            _ = range_.start.value()
+            _ = range_.end.value()
+
+    benchmark(read_start_and_end)
+
+
 @pytest.mark.benchmark(group="range_intersection")
 @pytest.mark.parametrize("ranges_module", [xocto_ranges, rustyranges, pysimpleranges])
 def test_benchmark_range_intersection(ranges_module, benchmark):
